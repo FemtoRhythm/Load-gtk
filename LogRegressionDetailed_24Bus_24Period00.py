@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-"""
-电力系统机组组合预测模型（Transformer版本）
-基于原始工作修改：Arun Ramesh, 休斯顿大学
-修改内容：改用Transformer架构实现时序特征提取
-"""
-
 # 导入必要的库
 import numpy as np
 import matplotlib
