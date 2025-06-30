@@ -99,11 +99,19 @@ class MyWindow(Gtk.Window):
         right_box.pack_start(btn_predict, False, False, 0)
         
         # CPU占用显示
-        self.cpu_label = Gtk.Label(label="CPU占用: 0%")
+        self.cpu_label = Gtk.Label(label="CPU使用率: 0%")
         right_box.pack_start(self.cpu_label, False, False, 0)
+        
+        # 添加CPU使用率定时更新
+        GObject.timeout_add(1000, self.update_cpu_usage)
         
         self.set_default_size(800, 500)
     
+    def update_cpu_usage(self):
+        cpu_percent = psutil.cpu_percent(interval=1)
+        self.cpu_label.set_text(f"CPU使用率: {cpu_percent}%")
+        return True  # 保持定时器运行
+
     
     def open_train_file(self, widget):
         dialog = Gtk.FileChooserDialog(
@@ -232,16 +240,6 @@ class MyWindow(Gtk.Window):
         else:
             self.append_log("请先加载模型和选择输入数据文件")
             
-    def update_cpu_usage(self):
-        if hasattr(self, 'cpu_monitor') and self.cpu_monitor:
-            psutil.cpu_percent(interval=None)  # 初始化
-            while True:
-                cpu_percent = psutil.cpu_percent(interval=1)
-                print(f"CPU使用率: {cpu_percent}%")
-                time.sleep(1)  # 适当延迟
-            self.cpu_label.set_text(f"CPU占用: {cpu_percent}%")
-            return True
-        return False
                 
     def on_train_finished(self, widget=None):
         dialog = Gtk.MessageDialog(
