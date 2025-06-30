@@ -234,9 +234,10 @@ class MyWindow(Gtk.Window):
             
     def update_cpu_usage(self):
         if hasattr(self, 'cpu_monitor') and self.cpu_monitor:
+            psutil.cpu_percent(interval=None)  # 初始化
             while True:
                 cpu_percent = psutil.cpu_percent(interval=1)
-                print(f"当前CPU使用率: {cpu_percent}%")
+                print(f"CPU使用率: {cpu_percent}%")
                 time.sleep(1)  # 适当延迟
             self.cpu_label.set_text(f"CPU占用: {cpu_percent}%")
             return True
